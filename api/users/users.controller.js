@@ -60,14 +60,20 @@ class UsersController {
     try {
       const { email, password } = req.body;
       const userId = await usersService.checkPasswordUser(email, password);
+      const user = await usersService.get(userId);
       if (!userId) {
         throw new UnauthorizedError();
       }
-      const token = jwt.sign({ userId }, config.secretJwtToken, {
-        expiresIn: "3d",
-      });
+      const token = jwt.sign(
+        { id: user._id, name: user.name, email: user.email, role: user.role },
+        config.secretJwtToken,
+        {
+          expiresIn: "3d",
+        }
+      );
       res.json({
         token,
+        //decoded: jwt.verify(token, config.secretJwtToken),
       });
     } catch (err) {
       next(err);
