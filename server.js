@@ -29,11 +29,10 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 
+app.get("/api/users/:id/articles", usersController.getAllArticlesByUserId);
 app.use("/api/users", authMiddleware, userRouter);
 
-
-app.get("/api/users", articleRouter);
-//app.use("/api/articles", authMiddleware, articleRouter);
+app.use("/api/articles", authMiddleware, articleRouter);
 app.post("/login", usersController.login);
 
 app.use("/", express.static("public"));

@@ -4,9 +4,9 @@ class ArticlesService {
   //   getAll() {
   //     return Article.find();
   //   }
-  //   get(id) {
-  //     return Article.findById(id);
-  //   }
+  async getAllByUserId(userId) {
+    return await Article.find({ user: userId }).populate("user", "-password");
+  }
 
   create(data) {
     const article = new Article(data);
